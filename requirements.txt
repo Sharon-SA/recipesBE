@@ -13,7 +13,7 @@ exceptiongroup==1.0.1
 h11==0.14.0
 idna==3.4
 outcome==1.2.0
-PyJWT==2.6.0
+
 PySocks==1.7.1
 pytz==2020.1
 selenium==4.6.0
