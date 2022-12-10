@@ -1,45 +1,42 @@
-from django.contrib import admin
-from django.urls import path, re_path
+"""recipes_rest URL Configuration
 
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView
-)
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+
+from django.conf.urls import url
+from rest_framework_jwt.views import obtain_jwt_token
 from recipes import views
 
 urlpatterns = [
-
     path('admin/', admin.site.urls),
-    path('auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/', obtain_jwt_token),
     path('category/', views.category_list),
-    re_path(r'^api/category/$', views.category_list),
-    re_path(r'^api/category/(?P<pk>[0-9]+)$', views.getCategory),
+    url(r'^api/category/$', views.category_list),
+    url(r'^api/category/(?P<pk>[0-9]+)$', views.getCategory),
     path('cuisine/', views.cuisine_list),
-    re_path(r'^api/cuisine/$', views.cuisine_list),
-    re_path(r'^api/cuisine/(?P<pk>[0-9]+)$', views.getCuisine),
+    url(r'^api/cuisine/$', views.cuisine_list),
+    url(r'^api/cuisine/(?P<pk>[0-9]+)$', views.getCuisine),
     path('meal/', views.meal_list),
-    re_path(r'^api/meal/$', views.meal_list),
-    re_path(r'^api/meal/(?P<pk>[0-9]+)$', views.getMeal),
+    url(r'^api/meal/$', views.meal_list),
+    url(r'^api/meal/(?P<pk>[0-9]+)$', views.getMeal),
     path('diet/', views.diet_list),
-    re_path(r'^api/diet/$', views.diet_list),
-    re_path(r'^api/diet/(?P<pk>[0-9]+)$', views.getDiet),
+    url(r'^api/diet/$', views.diet_list),
+    url(r'^api/diet/(?P<pk>[0-9]+)$', views.getDiet),
     path('', views.recipe_list),
-    re_path(r'^api/recipe/$', views.recipe_list),
-    re_path(r'^api/recipe/(?P<pk>[0-9]+)$', views.getRecipe),
-    path('instructions/', views.instructions_list),
-    re_path(r'^api/instructions/$', views.instructions_list),
-    re_path(r'^api/instructions/(?P<pk>[0-9]+)$', views.getInstructions),
-    path('nutrition/', views.nutrition_list),
-    re_path(r'^api/nutrition/$', views.nutrition_list),
-    re_path(r'^api/nutrition/(?P<pk>[0-9]+)$', views.getNutrition),
-    path('ingredients/', views.ingredients_list),
-    re_path(r'^api/ingredients/$', views.ingredients_list),
-    re_path(r'^api/ingredients/(?P<pk>[0-9]+)$', views.getIngredients),
-    path('comments/', views.comments_list),
-    re_path(r'^api/comments/$', views.comments_list),
-    re_path(r'^api/comments/(?P<pk>[0-9]+)$', views.getComments),
-    path('favorites/', views.favorites_list),
-    re_path(r'^api/favorites/$', views.favorites_list),
-    re_path(r'^api/favorites/(?P<pk>[0-9]+)$', views.getFavorites),
-    path('register/', views.RegisterView.as_view(), name='auth_register'),
+    url(r'^api/recipe/$', views.recipe_list),
+    url(r'^api/recipe/(?P<pk>[0-9]+)$', views.getRecipe),
+    path('register/', views.RegisterView.as_view(), name='auth_register')
 ]
-

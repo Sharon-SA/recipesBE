@@ -1,4 +1,4 @@
-from .models import Category, Cuisine, Meal, Diet, Recipe, Instructions, NutritionalInformation, Ingredients, Comments, Favorites
+from .models import Category, Cuisine, Meal, Diet, Recipe
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
@@ -32,37 +32,7 @@ class DietSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
-        fields = ('pk', 'title', 'image_url', 'stars', 'ready_in_minutes', 'servings', 'price', 'cuisine', 'category', 'meal', 'diet')
-
-
-class InstructionsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Instructions
-        fields = ('pk', 'recipe', 'steps', 'directions')
-
-
-class NutritionalInformationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NutritionalInformation
-        fields = ('pk', 'recipe', 'fact')
-
-
-class IngredientsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ingredients
-        fields = ('pk', 'recipe', 'ingredient_name', 'quantity')
-
-
-class CommentsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comments
-        fields = ('pk', 'user', 'recipe', 'stars', 'subject', 'body', 'created_at', 'updated_at')
-
-
-class FavoritesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Favorites
-        fields = ('pk', 'user', 'recipe')
+        fields = ('pk', 'title', 'image_url', 'stars', 'ready_in_minutes', 'servings', 'price', 'ingredients', 'instructions', 'cuisine', 'category', 'meal', 'diet')
 
 
 class RegisterSerializer(serializers.ModelSerializer):

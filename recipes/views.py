@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 def category_list(request):
     permission_classes = (IsAuthenticatedOrReadOnly)
     if request.method == 'GET':
-        customers = Category.objects.all()
-        serializer = CategorySerializer(customers, context={'request': request}, many=True)
+        category = Category.objects.all()
+        serializer = CategorySerializer(category, context={'request': request}, many=True)
         return Response({'data': serializer.data})
 
     elif request.method == 'POST':
@@ -51,8 +51,8 @@ def getCategory(request, pk):
 def cuisine_list(request):
     permission_classes = (IsAuthenticatedOrReadOnly)
     if request.method == 'GET':
-        investment = Cuisine.objects.all()
-        serializer = CuisineSerializer(investment, context={'request': request}, many=True)
+        cuisine = Cuisine.objects.all()
+        serializer = CuisineSerializer(cuisine, context={'request': request}, many=True)
         return Response({'data': serializer.data})
 
     elif request.method == 'POST':
@@ -131,7 +131,7 @@ def getMeal(request, pk):
 def diet_list(request):
     permission_classes = (IsAuthenticatedOrReadOnly)
     if request.method == 'GET':
-        diet = Meal.objects.all()
+        diet = Diet.objects.all()
         serializer = DietSerializer(diet, context={'request': request}, many=True)
         return Response({'data': serializer.data})
 
@@ -147,7 +147,7 @@ def diet_list(request):
 def getDiet(request, pk):
     try:
         diet = Diet.objects.get(pk=pk)
-    except Meal.DoesNotExist:
+    except Diet.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -155,7 +155,7 @@ def getDiet(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
-        serializer = MealSerializer(diet, data=request.data, context={'request': request})
+        serializer = DietSerializer(diet, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -203,205 +203,6 @@ def getRecipe(request, pk):
 
     elif request.method == 'DELETE':
         recipe.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def instructions_list(request):
-    permission_classes = (IsAuthenticatedOrReadOnly)
-    if request.method == 'GET':
-        instructions = Instructions.objects.all()
-        serializer = InstructionsSerializer(instructions, context={'request': request}, many=True)
-        return Response({'data': serializer.data})
-
-    elif request.method == 'POST':
-        serializer = InstructionsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getInstructions(request, pk):
-    try:
-        instructions = Instructions.objects.get(pk=pk)
-    except Meal.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = InstructionsSerializer(instructions, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = InstructionsSerializer(instructions, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        instructions.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def nutrition_list(request):
-    permission_classes = (IsAuthenticatedOrReadOnly)
-    if request.method == 'GET':
-        nutrition = NutritionalInformation.objects.all()
-        serializer = NutritionalInformationSerializer(nutrition, context={'request': request}, many=True)
-        return Response({'data': serializer.data})
-
-    elif request.method == 'POST':
-        serializer = NutritionalInformationSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getNutrition(request, pk):
-    try:
-        nutrition = NutritionalInformation.objects.get(pk=pk)
-    except NutritionalInformation.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = NutritionalInformationSerializer(nutrition, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = NutritionalInformationSerializer(nutrition, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        nutrition.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def ingredients_list(request):
-    permission_classes = (IsAuthenticatedOrReadOnly)
-    if request.method == 'GET':
-        ingredients = Ingredients.objects.all()
-        serializer = IngredientsSerializer(ingredients, context={'request': request}, many=True)
-        return Response({'data': serializer.data})
-
-    elif request.method == 'POST':
-        serializer = IngredientsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getIngredients(request, pk):
-    try:
-        ingredients = Ingredients.objects.get(pk=pk)
-    except Ingredients.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = IngredientsSerializer(ingredients, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = IngredientsSerializer(ingredients, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        ingredients.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def comments_list(request):
-    permission_classes = (IsAuthenticatedOrReadOnly)
-    if request.method == 'GET':
-        comments = Comments.objects.all()
-        serializer = CommentsSerializer(comments, context={'request': request}, many=True)
-        return Response({'data': serializer.data})
-
-    elif request.method == 'POST':
-        serializer = CommentsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getComments(request, pk):
-    try:
-        comments = Comments.objects.get(pk=pk)
-    except Comments.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = CommentsSerializer(comments, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = CommentsSerializer(comments, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        comments.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-@csrf_exempt
-@api_view(['GET', 'POST'])
-def favorites_list(request):
-    permission_classes = (IsAuthenticatedOrReadOnly)
-    if request.method == 'GET':
-        favorites = Favorites.objects.all()
-        serializer = FavoritesSerializer(favorites, context={'request': request}, many=True)
-        return Response({'data': serializer.data})
-
-    elif request.method == 'POST':
-        serializer = FavoritesSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getFavorites(request, pk):
-    try:
-        favorites = Favorites.objects.get(pk=pk)
-    except Favorites.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = FavoritesSerializer(favorites, context={'request': request})
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = FavoritesSerializer(favorites, data=request.data, context={'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        favorites.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
